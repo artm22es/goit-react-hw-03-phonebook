@@ -17,6 +17,19 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const persistContacts = localStorage.getItem('contacts');
+    if (persistContacts) {
+      this.setState({ contacts: JSON.parse(persistContacts) });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = contact => {
     const isExist = this.state.contacts.find(
       item => item.name.toLowerCase() === contact.name.toLowerCase()
